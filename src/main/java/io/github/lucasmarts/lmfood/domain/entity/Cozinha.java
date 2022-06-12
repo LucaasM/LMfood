@@ -1,5 +1,6 @@
 package io.github.lucasmarts.lmfood.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -25,6 +26,7 @@ public class Cozinha {
     @NotEmpty(message = "{campo.nome.cozinha}")
     private String nome;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cozinha")
     private List<Restaurante> restauranteList = new ArrayList<>();
 }

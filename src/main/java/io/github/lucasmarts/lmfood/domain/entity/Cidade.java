@@ -1,12 +1,15 @@
 package io.github.lucasmarts.lmfood.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 @Entity
 public class Cidade {
 
@@ -19,4 +22,17 @@ public class Cidade {
 
     @ManyToOne
     private Estado estado;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Cidade cidade = (Cidade) o;
+        return id != null && Objects.equals(id, cidade.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
