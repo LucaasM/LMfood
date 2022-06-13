@@ -24,10 +24,9 @@ public class Restaurante {
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Cozinha cozinha;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name="restaurante_forma_pagamento",
                 joinColumns =  @JoinColumn(name = "restaurante_id"),

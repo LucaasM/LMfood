@@ -2,6 +2,7 @@ package io.github.lucasmarts.lmfood.domain.entity;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable
 public class Endereco {
@@ -18,6 +19,7 @@ public class Endereco {
     @JoinColumn(name = "endereco_restaurante_numero")
     private String numero;
 
-    @JoinColumn(name = "endereco_restaurante_cidade")
-    private String cidade;
+    @ManyToOne
+    private Cidade cidade;
+
 }
