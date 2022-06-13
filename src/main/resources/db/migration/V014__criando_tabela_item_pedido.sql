@@ -1,0 +1,1 @@
+create table item_pedido (id bigint not null auto_increment, observacao varchar(255), preco_total decimal(19,2), preco_unitario decimal(19,2), quantidade bigint, produto_id bigint, primary key (id)) engine=InnoDB default charset=utf8;

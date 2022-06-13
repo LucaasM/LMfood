@@ -1,0 +1,1 @@
+create table restaurante (id bigint not null auto_increment, bairro varchar(255), cep varchar(255), logradouro varchar(255), numero varchar(255), nome varchar(255), taxa_frete decimal(19,2), cozinha_id bigint, cidade_id bigint, primary key (id)) engine=InnoDB default charset=utf8;

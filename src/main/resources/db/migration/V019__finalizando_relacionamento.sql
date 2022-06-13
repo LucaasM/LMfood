@@ -1,0 +1,9 @@
+alter table pedido add constraint FK3eud5cqmgsnltyk704hu3qj71 foreign key (restaurante_id) references restaurante (id);
+alter table pedido add constraint FK6uxomgomm93vg965o8brugt00 foreign key (usuario_id) references usuario (id);
+alter table pedido_item_pedido add constraint FK42f51fj53l92vu2h9dl71nlmr foreign key (item_pedido_id) references item_pedido (id);
+alter table pedido_item_pedido add constraint FKchgyfxkh0mqinxtk2s71j81vs foreign key (pedido_id) references pedido (id);
+alter table produto add constraint FKb9jhjyghjcn25guim7q4pt8qx foreign key (restaurante_id) references restaurante (id);
+alter table restaurante add constraint FK76grk4roudh659skcgbnanthi foreign key (cozinha_id) references cozinha (id);
+alter table restaurante add constraint FKnbrdf9c9165xgwuynayr85m0h foreign key (cidade_id) references cidade (id);
+alter table restaurante_forma_pagamento add constraint FK7aln770m80358y4olr03hyhh2 foreign key (forma_pagamento_id) references forma_pagamento (id);
+alter table restaurante_forma_pagamento add constraint FKa30vowfejemkw7whjvr8pryvj foreign key (restaurante_id) references restaurante (id);

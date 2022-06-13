@@ -1,0 +1,1 @@
+create table pedido_item_pedido (pedido_id bigint not null, item_pedido_id bigint not null) engine=InnoDB default charset=utf8;

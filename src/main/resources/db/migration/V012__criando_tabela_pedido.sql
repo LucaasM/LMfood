@@ -1,0 +1,18 @@
+create table pedido (
+    id bigint not null auto_increment,
+    data_cancelamento date,
+    data_confirmacao date,
+    data_criacao date,
+    data_entrega date,
+    bairro varchar(255),
+    cep varchar(255),
+    logradouro varchar(255),
+    numero varchar(255),
+    sub_total decimal(19,2),
+    taxa_frete decimal(19,2),
+    valor_total decimal(19,2),
+    cidade_id bigint,
+    forma_pagamento_id bigint,
+    restaurante_id bigint,
+    usuario_id bigint,
+    primary key (id)) engine=InnoDB default charset=utf8;

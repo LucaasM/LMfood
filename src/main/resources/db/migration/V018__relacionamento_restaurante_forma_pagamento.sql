@@ -1,0 +1,1 @@
+create table restaurante_forma_pagamento (restaurante_id bigint not null, forma_pagamento_id bigint not null) engine=InnoDB default charset=utf8;
