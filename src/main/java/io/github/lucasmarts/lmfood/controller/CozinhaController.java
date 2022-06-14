@@ -26,11 +26,7 @@ public class CozinhaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> porId(@PathVariable Long id) {
-        try {
-            return new ResponseEntity<>(cadastroCozinhaService.porId(id), HttpStatus.OK);
-        } catch (EntidadeNaoEncontradaException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(cadastroCozinhaService.porId(id), HttpStatus.OK);
     }
 
     @PostMapping
@@ -40,25 +36,12 @@ public class CozinhaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
-
-        try {
-            return new ResponseEntity<>(cadastroCozinhaService.atualizar(id, cozinha), HttpStatus.OK);
-        } catch (EntidadeNaoEncontradaException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+        return new ResponseEntity<>(cadastroCozinhaService.atualizar(id, cozinha), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
-        try {
-            cadastroCozinhaService.remove(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch(EntidadeEmUsoException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-        } catch(EntidadeNaoEncontradaException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+        cadastroCozinhaService.remove(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

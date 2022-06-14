@@ -4,7 +4,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-
+  jackson:
+    deserialization:
+      fail-on-ignored-properties: true
+      fail-on-unknown-properties: true
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     show-sql: true

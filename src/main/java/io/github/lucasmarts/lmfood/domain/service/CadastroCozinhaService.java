@@ -1,8 +1,8 @@
 package io.github.lucasmarts.lmfood.domain.service;
 
 import io.github.lucasmarts.lmfood.domain.entity.Cozinha;
+import io.github.lucasmarts.lmfood.domain.exception.CozinhaNaoEncontradoException;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeEmUsoException;
-import io.github.lucasmarts.lmfood.domain.exception.EntidadeNaoEncontradaException;
 import io.github.lucasmarts.lmfood.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -26,7 +26,7 @@ public class CadastroCozinhaService {
     }
 
     public Cozinha porId(Long id) {
-        return cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(
+        return cozinhaRepository.findById(id).orElseThrow(() -> new CozinhaNaoEncontradoException(
                 String.format("Não existe um cadastro de cozinha com código %d", id)
         ));
     }
@@ -42,7 +42,7 @@ public class CadastroCozinhaService {
         try {
             cozinhaRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(
+            throw new CozinhaNaoEncontradoException(
                     String.format("Não existe um cadastro de cozinha com código %d", id)
             );
         } catch (DataIntegrityViolationException e) {

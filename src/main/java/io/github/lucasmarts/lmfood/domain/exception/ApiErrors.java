@@ -1,20 +1,16 @@
 package io.github.lucasmarts.lmfood.domain.exception;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.List;
-
+@Builder
+@Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiErrors {
 
-    @Getter
-    private final List<String> errors;
-
-    public ApiErrors(List<String> errors) {
-        this.errors = errors;
-    }
-
-    public ApiErrors(String message) {
-        this.errors = Arrays.asList(message);
-    }
+   private Integer status;
+   private String type;
+   private String title;
+   private String detail;
 }

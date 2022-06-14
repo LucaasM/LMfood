@@ -33,12 +33,7 @@ public class CidadeController {
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Cidade cidade) {
-        try {
-            return new ResponseEntity<>(cadastroCidadeService.adicionar(cidade), HttpStatus.CREATED);
-        } catch (EntidadeNaoEncontradaException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-
+         return new ResponseEntity<>(cadastroCidadeService.adicionar(cidade), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
