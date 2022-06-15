@@ -1,14 +1,13 @@
 package io.github.lucasmarts.lmfood.controller;
 
-import com.fasterxml.jackson.databind.exc.IgnoredPropertyException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import io.github.lucasmarts.lmfood.domain.enums.TipoProblema;
 import io.github.lucasmarts.lmfood.domain.exception.ApiErrors;
 import io.github.lucasmarts.lmfood.domain.exception.CozinhaNaoEncontradoException;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeEmUsoException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.stream.Collectors;
@@ -78,6 +78,35 @@ public class ApplicationControllerAdvice extends ResponseEntityExceptionHandler 
         ApiErrors apiErrors = getApiErrorsBuilders(status, tipoProblema, detail).build();
 
         return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<Object> handleNumberFormatException(NumberFormatException ex,
+                                                                  HttpHeaders headers,
+                                                                  HttpStatus status, WebRequest request) {
+        TipoProblema tipoProblema = TipoProblema.PARAMETRO_INVALIDO;
+        String detail = "O parâmetro informado na URL é inválido. Corrija e envie um valor válido";
+
+        ApiErrors apiErrors = getApiErrorsBuilders(status, tipoProblema, detail).build();
+
+        return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        Throwable rootCause = ExceptionUtils.getRootCause(ex);
+
+        if(rootCause instanceof NumberFormatException){
+            return handleNumberFormatException((NumberFormatException) rootCause, headers, status, request);
+        }
+
+        TipoProblema tipoProblema = TipoProblema.PARAMETRO_INVALIDO;
+        String detail = "O valor informado na URL é inválido.";
+
+        ApiErrors apiErrors = getApiErrorsBuilders(status, tipoProblema, detail).build();
+
+        return this.handleExceptionInternal(ex, apiErrors, headers, status, request);
     }
 
     @Override
