@@ -12,13 +12,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -135,10 +136,19 @@ public class ApplicationControllerAdvice extends ResponseEntityExceptionHandler 
                                                                   HttpHeaders headers,
                                                                   HttpStatus status, WebRequest request){
 
-        TipoProblema tipoProblema = TipoProblema.ARGUMENTO_VAZIO;
-        String detail = "O corpo da requisição está vazio. Verifique os dados passados";
+        BindingResult bindingResult = ex.getBindingResult();
+        List<ApiErrors.Field> fieldList = bindingResult.getFieldErrors().stream().map(
+                fieldError -> ApiErrors.Field.builder()
+                        .nome(fieldError.getField())
+                        .userMessage(fieldError.getDefaultMessage())
+                        .build()).toList();
 
-        ApiErrors apiErrors = getApiErrorsBuilders(status, tipoProblema, detail).build();
+        TipoProblema tipoProblema = TipoProblema.DADOS_INVALIDOS;
+        String detail = "Um ou mais dados informados são inválidos. Corrija e informe dados válidos.";
+
+        ApiErrors apiErrors = getApiErrorsBuilders(status, tipoProblema, detail)
+                .fields(fieldList)
+                .build();
 
         return handleExceptionInternal(ex, apiErrors, new HttpHeaders(), status, request);
     }
