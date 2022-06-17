@@ -3,7 +3,6 @@ package io.github.lucasmarts.lmfood.controller;
 import io.github.lucasmarts.lmfood.domain.entity.Restaurante;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeNaoEncontradaException;
 import io.github.lucasmarts.lmfood.domain.service.CadastroRestauranteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +14,11 @@ import java.util.Map;
 @RequestMapping("/restaurantes")
 public class RestauranteController {
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestauranteService;
+    private final CadastroRestauranteService cadastroRestauranteService;
+
+    public RestauranteController(CadastroRestauranteService cadastroRestauranteService) {
+        this.cadastroRestauranteService = cadastroRestauranteService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Restaurante>> todos() {

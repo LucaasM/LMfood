@@ -3,7 +3,6 @@ package io.github.lucasmarts.lmfood.controller;
 import io.github.lucasmarts.lmfood.domain.entity.FormaPagamento;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeNaoEncontradaException;
 import io.github.lucasmarts.lmfood.domain.service.CadastroFormaPagamentoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.List;
 @RequestMapping("/formaPagamento")
 public class FormaPagamentoController {
 
-    @Autowired
-    private CadastroFormaPagamentoService cadastroFormaPagamentoService;
+    private final CadastroFormaPagamentoService cadastroFormaPagamentoService;
+
+    public FormaPagamentoController(CadastroFormaPagamentoService cadastroFormaPagamentoService) {
+        this.cadastroFormaPagamentoService = cadastroFormaPagamentoService;
+    }
 
     @GetMapping
     public ResponseEntity<List<FormaPagamento>> listar(){

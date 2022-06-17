@@ -3,7 +3,6 @@ package io.github.lucasmarts.lmfood.controller;
 import io.github.lucasmarts.lmfood.domain.entity.Permissao;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeNaoEncontradaException;
 import io.github.lucasmarts.lmfood.domain.service.CadastroPermissaoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +13,11 @@ import java.util.List;
 @RequestMapping("/permissao")
 public class PermissaoController {
 
-    @Autowired
-    private CadastroPermissaoService cadastroPermissaoService;
+    private final CadastroPermissaoService cadastroPermissaoService;
+
+    public PermissaoController(CadastroPermissaoService cadastroPermissaoService) {
+        this.cadastroPermissaoService = cadastroPermissaoService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Permissao>> listar(){

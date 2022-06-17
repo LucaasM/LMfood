@@ -8,11 +8,15 @@ import io.github.lucasmarts.lmfood.domain.exception.CozinhaNaoEncontradoExceptio
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeEmUsoException;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.TypeMismatchException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,8 +26,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @RestControllerAdvice
 public class ApplicationControllerAdvice extends ResponseEntityExceptionHandler {
+
+
+    private final MessageSource messageSource;
+
+    public ApplicationControllerAdvice (MessageSource messageSource){
+        this.messageSource = messageSource;
+    }
 
     @ExceptionHandler(CozinhaNaoEncontradoException.class)
     public ResponseEntity<?> handleValidationErrors(CozinhaNaoEncontradoException ex, WebRequest request) {
@@ -138,10 +150,21 @@ public class ApplicationControllerAdvice extends ResponseEntityExceptionHandler 
 
         BindingResult bindingResult = ex.getBindingResult();
         List<ApiErrors.Field> fieldList = bindingResult.getFieldErrors().stream().map(
-                fieldError -> ApiErrors.Field.builder()
-                        .nome(fieldError.getField())
-                        .userMessage(fieldError.getDefaultMessage())
-                        .build()).toList();
+                fieldError ->{
+                    String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+                    String name = null;
+
+                    if(fieldError instanceof FieldError) {
+                        name = ((FieldError) fieldError).getField();
+                    }
+
+                    return ApiErrors.Field.builder()
+                            .nome(name)
+                            .userMessage(message)
+                            .build();
+                }).collect(Collectors.toList());
+
 
         TipoProblema tipoProblema = TipoProblema.DADOS_INVALIDOS;
         String detail = "Um ou mais dados informados são inválidos. Corrija e informe dados válidos.";

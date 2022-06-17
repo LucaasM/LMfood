@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Configuration
@@ -19,6 +21,9 @@ public class InternacionalizacaoConfig {
         messageSource.setDefaultLocale(Locale.getDefault());
 
         return messageSource;
+
+
+
     }
 
     @Bean

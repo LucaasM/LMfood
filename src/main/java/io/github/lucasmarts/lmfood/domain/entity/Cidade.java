@@ -1,10 +1,15 @@
 package io.github.lucasmarts.lmfood.domain.entity;
 
+import io.github.lucasmarts.lmfood.grupos.Grupos;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import java.util.Objects;
 
 @Getter
@@ -19,9 +24,12 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String nome;
 
+    @Valid
+    @ConvertGroup(from = Default.class, to = Grupos.CadastroCidade.class)
+    @NotNull
     @ManyToOne
     private Estado estado;
 

@@ -4,19 +4,22 @@ import io.github.lucasmarts.lmfood.domain.entity.Estado;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeEmUsoException;
 import io.github.lucasmarts.lmfood.domain.exception.EntidadeNaoEncontradaException;
 import io.github.lucasmarts.lmfood.domain.service.CadastroEstadoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/estados")
 public class EstadoController {
 
-    @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private final CadastroEstadoService cadastroEstadoService;
+
+    public EstadoController(CadastroEstadoService cadastroEstadoService) {
+        this.cadastroEstadoService = cadastroEstadoService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Estado>> listar(){
@@ -35,7 +38,7 @@ public class EstadoController {
     }
 
     @PostMapping
-    public ResponseEntity<Estado> adicionar(@RequestBody  Estado estado){
+    public ResponseEntity<Estado> adicionar(@RequestBody @Valid Estado estado){
         return new ResponseEntity<>(cadastroEstadoService.adicionar(estado), HttpStatus.CREATED);
     }
 
